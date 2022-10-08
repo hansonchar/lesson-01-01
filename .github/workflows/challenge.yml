@@ -1,0 +1,38 @@
+name: complex-workflow-challenge
+
+on: [push]
+
+jobs:
+  job1:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Print date on Ubuntu
+      run: date
+
+jobs:
+  job2:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Print date on Windows
+      run: Get-Date
+
+jobs:
+  job3:
+
+    runs-on: macos-latest
+
+    steps:
+    - name: Print date on Mac
+      run: date
+
+jobs:
+  job4:
+
+    runs-on: ubuntu-latest
+    needs: [job1, job2, job3]
+    steps:
+    - run: echo "ok!"
