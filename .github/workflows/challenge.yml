@@ -1,35 +1,24 @@
-name: complex-workflow-challenge
+name: workflow-with-artifact-challenge
+
+env:
+  ARTIFACT: 'github-workflows.txz'
 
 on: [push]
 
 jobs:
-  job1:
+  upload-artifact:
 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Print date on Ubuntu
-      run: date
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
-  job2:
+    - name: Create artifact
+      run: tar cJf ${{ env.ARTIFACT }} .github
 
-    runs-on: windows-latest
-
-    steps:
-    - name: Print date on Windows
-      run: Get-Date
-
-  job3:
-
-    runs-on: macos-latest
-
-    steps:
-    - name: Print date on Mac
-      run: date
-
-  job4:
-
-    runs-on: ubuntu-latest
-    needs: [job1, job2, job3]
-    steps:
-    - run: echo "ok!"
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: myartifact
+        path: ./${{ env.ARTIFACT }}
